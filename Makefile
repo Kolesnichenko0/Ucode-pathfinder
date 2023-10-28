@@ -4,7 +4,6 @@ SRCS_FOLDER = src
 LIB_FOLDER = libmx
 LIB = $(LIB_FOLDER)/libmx.a
 NAME = pathfinder
-NAME_LIB = MX
 INCS := $(wildcard $(INCS_FOLDER)/*.h)
 SRCS := $(wildcard $(SRCS_FOLDER)/*.c)
 OBJS := $(patsubst $(SRCS_FOLDER)/%.c, $(OBJS_FOLDER)/%.o, $(SRCS))
@@ -15,18 +14,18 @@ CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
 
 all: install
 
-install: $(NAME_LIB) $(NAME)
+install: $(LIB) $(NAME)
 
-$(NAME_LIB):
+$(LIB):
 	make -sC $(LIB_FOLDER)
 
-$(NAME): $(OBJS_FOLDER) $(OBJS) $(LIB)
+$(NAME): $(OBJS_FOLDER) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -L $(LIB_FOLDER) -lmx -o $@
 
 $(OBJS_FOLDER):
 	mkdir $(OBJS_FOLDER)
 
-$(OBJS_FOLDER)/%.o:$(SRCS_FOLDER)/%.c $(INCS)
+$(OBJS_FOLDER)/%.o:$(SRCS_FOLDER)/%.c $(INCS) $(LIB)
 	$(CC) $(CFLAGS) -I $(LIB_FOLDER)/$(INCS_FOLDER) -I $(INCS_FOLDER) -c $< -o $@
 
 uninstall: clean
