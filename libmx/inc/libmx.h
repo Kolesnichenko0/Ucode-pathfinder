@@ -101,9 +101,9 @@ void mx_push_back(t_list **list, void *data);
 void mx_pop_front(t_list **head);
 void mx_pop_back(t_list **head);
 int mx_list_size(t_list *list);
-t_list *mx_sort_list(t_list *lst, bool(*cmp)(void *, void *));
+t_list *mx_sort_list(t_list *lst, void *vertex, bool(*cmp)(void *, void *, void *));
 
-//Act: My pack
+//Act: My list pack
 void mx_clear_list(t_list **list);
 void mx_del_node_if(t_list **list, void *del_data, bool (*cmp)(void *a, void *b));
 void mx_foreach_list(t_list *list, void (*f)(t_list *node));
