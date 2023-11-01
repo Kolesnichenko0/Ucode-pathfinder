@@ -48,9 +48,26 @@ static void print_path(t_graph *graph, t_list *path, long starting_index, long e
     print_separating_line();
 }
 
+static bool compare_island(void *path1, void *path2) {
+    path1 = ((t_list*)path1)->next;
+    path2 = ((t_list*)path2)->next;
+    while((t_list*)path1 != NULL && (t_list*)path2 != NULL ) {
+        t_path_vertex *vertex1 = (t_path_vertex *)(((t_list*)path1)->data);
+        t_path_vertex *vertex2 = (t_path_vertex *)(((t_list*)path2)->data);
+        if(vertex1->island_index > vertex2->island_index)
+            return true;
+        path1 = ((t_list*)path1)->next;
+        path2 = ((t_list*)path2)->next;
+        if(vertex1->island_index != vertex2->island_index)
+            return false;
+    }
+    return false;
+}
+
 void print_paths_from(t_graph *graph, t_path_vertex *vertices, long starting_index) {
     for (long ending_index = starting_index + 1; ending_index < graph->island_count; ending_index++) {
         t_list *paths_to_ending = parse_all_paths_to(&vertices[ending_index]);
+        mx_sort_list(paths_to_ending, compare_island);
         t_list *current_path = paths_to_ending;
         while (current_path != NULL) {
             t_list *path = (t_list *) current_path->data;
