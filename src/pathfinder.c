@@ -52,10 +52,16 @@ t_path_vertex *find_path(t_graph *graph, long starting_index) {
 }
 
 static bool compare_island(void *vertex1, void *vertex2, void *vertex) {
-    if(((t_path_vertex *) vertex1)->previous == NULL && (((t_path_vertex *) vertex2)->previous != NULL))
+  if(((t_path_vertex *) vertex1)->previous == NULL && (((t_path_vertex *) vertex2)->previous != NULL)) {
+        while(((t_path_vertex *)((t_path_vertex *) vertex2)->previous->data)->previous)
+            vertex2 = ((t_path_vertex *) vertex2)->previous->data;
         return ((t_path_vertex *) vertex)->island_index > ((t_path_vertex *) vertex2)->island_index;
-    if(((t_path_vertex *) vertex2)->previous == NULL && (((t_path_vertex *) vertex1)->previous != NULL))
+    }
+    if(((t_path_vertex *) vertex2)->previous == NULL && (((t_path_vertex *) vertex1)->previous != NULL)) {
+        while(((t_path_vertex *)((t_path_vertex *) vertex1)->previous->data)->previous)
+            vertex1 = ((t_path_vertex *) vertex1)->previous->data;
         return ((t_path_vertex *) vertex)->island_index < ((t_path_vertex *) vertex1)->island_index;
+    }
     return ((t_path_vertex *) vertex1)->island_index > ((t_path_vertex *) vertex2)->island_index;
 }
 
