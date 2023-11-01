@@ -6,7 +6,7 @@ static void swap_data(t_list *list) {
     list->next->data = temp_data;
 }
 
-t_list *mx_sort_list(t_list *lst, void *vertex, bool(*cmp)(void *, void *, void *)) {
+t_list *mx_sort_list(t_list *lst, bool(*cmp)(void *, void *)) {
     if (lst == NULL || cmp == NULL)
         return lst;
 
@@ -14,7 +14,7 @@ t_list *mx_sort_list(t_list *lst, void *vertex, bool(*cmp)(void *, void *, void 
     while (!sort_flag) {
         sort_flag = true;
         for (t_list *i = lst; i->next != NULL; i = i->next) {
-            if (cmp(i->data, i->next->data, vertex)) {
+            if (cmp(i->data, i->next->data)) {
                 swap_data(i);
                 sort_flag = false;
             }
