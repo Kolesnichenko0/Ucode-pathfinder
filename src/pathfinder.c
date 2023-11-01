@@ -51,27 +51,12 @@ t_path_vertex *find_path(t_graph *graph, long starting_index) {
     return vertices;
 }
 
-static bool compare_island(void *vertex1, void *vertex2, void *vertex) {
-  if(((t_path_vertex *) vertex1)->previous == NULL && (((t_path_vertex *) vertex2)->previous != NULL)) {
-        while(((t_path_vertex *)((t_path_vertex *) vertex2)->previous->data)->previous)
-            vertex2 = ((t_path_vertex *) vertex2)->previous->data;
-        return ((t_path_vertex *) vertex)->island_index > ((t_path_vertex *) vertex2)->island_index;
-    }
-    if(((t_path_vertex *) vertex2)->previous == NULL && (((t_path_vertex *) vertex1)->previous != NULL)) {
-        while(((t_path_vertex *)((t_path_vertex *) vertex1)->previous->data)->previous)
-            vertex1 = ((t_path_vertex *) vertex1)->previous->data;
-        return ((t_path_vertex *) vertex)->island_index < ((t_path_vertex *) vertex1)->island_index;
-    }
-    return ((t_path_vertex *) vertex1)->island_index > ((t_path_vertex *) vertex2)->island_index;
-}
-
 t_list *parse_all_paths_to(t_path_vertex *vertex) {
     t_list *paths = NULL;
     if (vertex->distance_from_initial == 0)
         return mx_create_node(mx_create_node(vertex));
 
     t_list *previous = vertex->previous;
-    mx_sort_list(previous, vertex, compare_island);
     while (previous != NULL) {
         t_list *temp = parse_all_paths_to((t_path_vertex *) previous->data);
         t_list *current = temp;
